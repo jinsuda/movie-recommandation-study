@@ -1,0 +1,5 @@
+https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=<<api_key>>&language=en-US
+
+https://developers.themoviedb.org/3/movies/get-movie-credits
+
+영화데이터랑 같은 movie_id 받아서 json 받기
