@@ -3,3 +3,20 @@ https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=<<api_key>>&langua
 https://developers.themoviedb.org/3/movies/get-movie-credits
 
 영화데이터랑 같은 movie_id 받아서 json 받기
+
+"cast"
+cast_id 
+id (people id) 
+name 
+job 
+character  
+credit_id  
+gender 
+
+"crew"
+credit_id
+id (people id)
+name
+job
+department
+gender
