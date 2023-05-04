@@ -1,3 +1,18 @@
+코사인 유사도 
+훈련점수가 몇점 이상인 영화를 추천
+
+
+유저가 뽑은 영화중 
+장르 3개 맞으면 추천
+장르가 3개보다 작은 영화는 점수를매겨서
+몇점 이상인 영화추천
+
+
+
+
+
+
+
 https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key=<<api_key>>&language=en-US
 
 https://developers.themoviedb.org/3/movies/get-movie-credits
