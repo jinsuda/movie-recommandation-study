@@ -1,29 +1,21 @@
-from fastapi import FastAPI, Depends, Path, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
-from database import engineconn
-from models import Test
+from pydantic import Field
 
 app = FastAPI()
 
-engine = engineconn()
-session = engine.sessionmaker()
 
-class Item(BaseModel):
-    name : str
-    phoneNumber : int
-    email : str
-    Korean : int
-    Math : int
-    English : int
-    
 @app.get("/")
-async def first_get():
-    example = session.query(Test).all()
-    return example
+async def root():
+    return {"message": "Hello World"}
 
-@app.post("/insert")
-async def insert(item : Item):
-    addMemo = Test(lastname=item.name.split()[0],firstname=item.name.split()[1], phoneNumber=item.phoneNumber, email=item.email, Korean=item.Korean, Math=item.Math, English=item.English )
-    session.add(addMemo)
-    session.commit()
-    return item
+
+@app.get("/all/")
+async def all_movies():
+    pass
+    return {"result": }
+
+@app.get("/similar_movie/")
+async def similar_movie():
+    pass
+    return {'title': ,'vote_average': ,'weighted_vote': }

@@ -1,6 +1,7 @@
 
 import pandas as pd
 import numpy as np
+import streamlit as st
 from sklearn.feature_extraction.text import CountVectorizer
 from ast import literal_eval
 from sklearn.metrics.pairwise import cosine_similarity
@@ -44,24 +45,6 @@ genre_sim = cosine_similarity(genre_mat, genre_mat)
 # 유사도가 가장 높은 순으로 정렬
 genre_sim_sorted = genre_sim.argsort()[:, ::-1]
 
-def find_movie(df, sorted_index, title_name, top_list=10):  # top_list : 상위 10개만 추천
-
-    title_movie = df[df['title'] == title_name]
-    title_index = title_movie.index.values
-    # genre_sim_sorted에서 유사도 순으로 top_list개 index추출
-    similar_index = sorted_index[title_index, :(top_list)]
-
-    # top_list index출력. (2차원->1차원으로)
-    print(similar_index)
-    similar_index = similar_index.reshape(-1)
-
-    return df.iloc[similar_index]
-
-
-similar_movies = find_movie(
-    movies_df, genre_sim_sorted, 'The Godfather', 10)
-similar_movies[['title', 'vote_average']]
-# kids는 장르가 아예 다름, 평점이 0인 영화도 있음
 
 
 # 가중평점(Weighted Rating) = (v/(v+m)) * R + (m/(v+m)) * C
@@ -103,8 +86,28 @@ def find_sim_movie(df, sorted_idx, title_name, top_list=10):
 
     similar_index = similar_index[similar_index != title_index]  # 기존 영화 인덱스 제외
 
-    return df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
+    movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
+    return movie_recommand
 
+# 영화 제목 받기
+class movie_input:
+    def __init__(self,title):
+        self.title = title
+        
+    def print_title(self):
+        print(self.title)
+        
+def input_title():
+    title = input("영화 : ")
+    
+def run():
+    input_title()
+    
+if __name__ == "__main__":
+    run()
+    
+title = movie_input
+print(type(title))
 
-similar_movie = find_sim_movie(movies_df, genre_sim_sorted, 'The Godfather', 10)
+similar_movie = find_sim_movie(movies_df, genre_sim_sorted,title, 10)
 similar_movie[['title', 'vote_average', 'weighted_vote']]

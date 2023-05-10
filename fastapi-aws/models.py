@@ -7,10 +7,11 @@ class Test(Base):
     __tablename__ = "User"
     
     id = Column(BIGINT, nullable=False,autoincrement=True, primary_key=True)
-    lastname = Column(TEXT, nullable=False)
-    firstname = Column(TEXT, nullable=False)
-    phoneNumber = Column(INT, nullable=False)
-    email = Column(TEXT, nullable=False)
-    Korean = Column(INT, nullable=False)
-    Math = Column(INT, nullable=False)
-    English = Column(INT, nullable=False)
+    title = Column(TEXT, nullable=False)
+    genres = Column(TEXT, nullable=False)
+    vote_average = Column(TEXT, nullable=False)
+    vote_count = Column(TEXT, nullable=False)
+    popularity = Column(TEXT, nullable=False)
+    keywords = Column(TEXT, nullable=False)
+    overview = Column(TEXT, nullable=False)
+ 
