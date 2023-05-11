@@ -21,14 +21,42 @@
 
 
 
+import mysql.connector
+
+# 데이터베이스 연결 설정
+conn = mysql.connector.connect(
+    host="localhost",
+    user="myusername",
+    password="mypassword",
+    database="mydatabase"
+)
+# SQL 쿼리 작성
+query = "SELECT * FROM movies WHERE genre = 'action'"
+
+# 쿼리 실행 및 결과 추출
+cursor = conn.cursor()
+cursor.execute(query)
+results = cursor.fetchall()
+
+# 결과를 Json 형태로 변환
+movies = []
+for result in results:
+    movie = {
+        "title": result[0],
+        "director": result[1],
+        "release_year": result[2],
+        "genre": result[3]
+    }
+    movies.append(movie)
+json_data = json.dumps(movies)
+
+# 변환된 Json 반환
+return json_data
 
 
 
 
-장르 점수를매겨서 기준 점수를 정해서 n개가 나오면
-리스트로 
 
-몇점 이상인 영화추천
 
 
 
