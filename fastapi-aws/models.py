@@ -3,8 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class Test(Base):
-    __tablename__ = "User"
+class Movie_df(Base):
+    __tablename__ = "Movie_info"
     
     id = Column(BIGINT, nullable=False,autoincrement=True, primary_key=True)
     title = Column(TEXT, nullable=False)

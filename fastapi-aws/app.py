@@ -5,17 +5,7 @@ from pydantic import Field
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/all/")
-async def all_movies():
-    pass
-    return {"result": }
-
-@app.get("/similar_movie/")
-async def similar_movie():
+@app.get("/r_movie/",{user_id})
+async def find_sim_movie():
     pass
     return {'title': ,'vote_average': ,'weighted_vote': }
