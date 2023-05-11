@@ -1,31 +1,22 @@
-코사인 유사도 
-
-
 
 유저가 영화를 검색하면 그 영화 장르와 비슷한 영화 추천
 영화마다 장르가 n개
 
-ex) 장르가 3개 이상 일치하는 영화  홈페이지에 10개 나열
-
-
+영화 장르전부를 벡터화해서 코사인유사도로 가장 유사한 영화  홈페이지에 10개 나열
 
 4. find_sim_movie 함수 이용
 
 5. 예시
-    high_movies = list()
-    high_movies = ['a','b','c']
+    search_movie = 'title'
 
-    recommand_movies = list()
-    for movie_ in high_movies:
-        recommand_movies.append(find_sim_movie(movie_)) # find_sim_movie 가 5개를 추천한다했을때
+    recommand_movies =  recommand_movies.append(find_sim_movie(movie_)) 
+    
 
-    len(recommand_movies) => 15  #a,b,c각각 영화의 추천영화를 뽑음 , 15개중에서 평점기준 상위10개분류
-
-6. 홈페이지에 n개를 나타내게 한다
+6. 홈페이지에 10개를 나타내게 한다
 
 
 추천 알고리즘 다 돌려놓고
- @app.get('/recommand/{user_id}')  # user_id 를 db에서 받아온다
+ @app.get('/recommand/{movie_title}')  # movie_title 를 db에서 받아온다
  def find_sim_movie()
 
 

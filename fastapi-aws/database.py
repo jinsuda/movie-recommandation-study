@@ -1,7 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
 
-DB_URL = 'mysql+pymysql://test:test@localhost:3306/testdb'
+DB_URL = 'mysql+pymysql://root:root@localhost:3306/tmdb'
                           #유저  pw                  db이름
                           
 class engineconn:
