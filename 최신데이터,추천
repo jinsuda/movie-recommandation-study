@@ -31,7 +31,7 @@ conn = mysql.connector.connect(
     database="mydatabase"
 )
 # SQL 쿼리 작성
-query = "SELECT * FROM table title = '아바타'
+query = "SELECT * FROM table title = '아바타'"
 
 # 쿼리 실행 및 결과 추출
 cursor = conn.cursor()
@@ -66,6 +66,16 @@ json_data = json.dumps(movies)
 return json_data
 
 
+## db에서 추천된 영화 목록을 가져와서 json형태로 가져오기
+from pymongo import MongoClient
+
+# client = MongoClient('localhost', 27017)
+client = MongoClient("mongodb://localhost:27017/")
+
+# db = client.test_database
+db = client['test-db'] # test-db라는 이름의 데이터베이스에 접속
+
+print(client.list_database_names()) # ['admin', 'config', 'local', 'test-database']
 
 
 
