@@ -75,3 +75,5 @@ async def find_sim_movie_api(title):
     return movie_recommand['title'].to_list()
     #return {'title': ,'vote_average': ,'weighted_vote': }
 
+def recommand_movie_list():
+    pass

@@ -48,7 +48,6 @@ for result in results:
         "title": result[0],
         "genres": result[1],
         "release_year": result[2],
-        "genre": result[3]
         overview
         original_title
         vote_average
