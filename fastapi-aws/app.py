@@ -71,7 +71,7 @@ async def find_sim_movie_api(title):
     movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
     print(movie_recommand['title'].to_list())
     
-    ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return
+    ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
     return movie_recommand['title'].to_list()
     #return {'title': ,'vote_average': ,'weighted_vote': }
 
