@@ -39,9 +39,12 @@ cursor.execute(query)
 results = cursor.fetchall()
 
 # 결과를 Json 형태로 변환
-movies = []
+10개 영화
+
+movies = [10개]
 for result in results:
-    movie = {
+    movie = [
+        {
         "title": result[0],
         "genres": result[1],
         "release_year": result[2],
@@ -51,7 +54,12 @@ for result in results:
         vote_average
         vote_count
         poster_path
-    }
+        },
+        {
+            ....
+        },
+        ...
+    ]
     movies.append(movie)
 json_data = json.dumps(movies)
 

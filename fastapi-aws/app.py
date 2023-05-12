@@ -17,7 +17,7 @@ session = engine.sessionmaker()
 
 movies = pd.read_csv('../tmdbData.csv')
 
-movies_df = movies[['id','title','genres','vote_average','vote_count','popularity','overview','original_title']]
+movies_df = movies[['title','genres','id','release_date','overview','original_title','vote_average','vote_count','poster_path']]
 
 movies_df['genres'] = movies_df['genres'].apply(literal_eval)
 
