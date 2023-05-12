@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from database import engineconn
 from models import Movie_df
+
 from pymongo import MongoClient
 
 
@@ -75,16 +76,35 @@ async def find_sim_movie_api(title):
     
     ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
     return movie_recommand['title'].to_list()
-    #return {'title': ,'vote_average': ,'weighted_vote': }
+        
+    
+@app.get("/recommand_movie_list/{title}")
+async def find_sim_movie_api(title):
+    df = movies_df
+    sorted_idx = genre_sim_sorted
+    top_list = 10
+    title_movie = df[df['title'] == title]
+    title_index = title_movie.index.values
 
+    # 장르 유사성이 높은 영화 top_list의 2배수만큼 후보선정
+    similar_index = sorted_idx[title_index, :(top_list*2)]
+    similar_index = similar_index.reshape(-1)
 
-async def recommand_movie_list(find_sim_movie_api):
+    similar_index = similar_index[similar_index != title_index]  # 기존 영화 인덱스 제외
+
+    movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
+    
     client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.yvz01u3.mongodb.net/?retryWrites=true&w=majority")
 
     db = client['Movie'] 
     movieInfo = db.movieInfo
     movieInfo = db["movieInfo"]
 
-    movieInfo.find(movie_recommand['title'].to_list())
-    
-    # movie_recommand['title'].to_list() 를 db에서 가져오기
+    mglist = movieInfo.find({movie_recommand['title'].to_dict()}:for문 돌면서 타이틀값 'title')
+    print(mglist)
+    ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
+    return mglist
+
+
+    for i in range(len(movie_recommand['title'].to_list())):
+        print({title:dict(i)})
