@@ -3,17 +3,17 @@ from pydantic import BaseModel
 from pydantic import Field
 from database import engineconn
 from models import Movie_df
-
 from pymongo import MongoClient
-
-
 import pandas as pd
 import numpy as np
 import streamlit as st
 from sklearn.feature_extraction.text import CountVectorizer
 from ast import literal_eval
 from sklearn.metrics.pairwise import cosine_similarity
-
+import pydantic
+from bson import ObjectId
+#ydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
+from fastapi.encoders import jsonable_encoder
 app = FastAPI()
 engine = engineconn()
 session = engine.sessionmaker()
@@ -34,6 +34,15 @@ genre_sim = cosine_similarity(genre_mat, genre_mat)
 # 유사도가 가장 높은 순으로 정렬
 genre_sim_sorted = genre_sim.argsort()[:, ::-1]
 
+    
+# 몽고db 연결    
+client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.yvz01u3.mongodb.net/?retryWrites=true&w=majority")
+
+db = client['Movie'] 
+movieInfo = db.movieInfo
+movieInfo = db["movieInfo"]
+
+    
 # 가중평점 공식
 C = movies_df['vote_average'].mean()
 m = movies_df['vote_count'].quantile(0.6)
@@ -57,27 +66,28 @@ def find_sim_movie(df, sorted_idx, title_name, top_list=10):
     
     return df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
 
-@app.get("/recommand_movie/{title}")
-async def find_sim_movie_api(title):
-    df = movies_df
-    sorted_idx = genre_sim_sorted
-    top_list = 10
-    title_movie = df[df['title'] == title]
-    title_index = title_movie.index.values
+# @app.get("/recommand_movie/{title}")
+# async def find_sim_movie_api(title):
+#     df = movies_df
+#     sorted_idx = genre_sim_sorted
+#     top_list = 10
+#     title_movie = df[df['title'] == title]
+#     title_index = title_movie.index.values
 
-    # 장르 유사성이 높은 영화 top_list의 2배수만큼 후보선정
-    similar_index = sorted_idx[title_index, :(top_list*2)]
-    similar_index = similar_index.reshape(-1)
+#     # 장르 유사성이 높은 영화 top_list의 2배수만큼 후보선정
+#     similar_index = sorted_idx[title_index, :(top_list*2)]
+#     similar_index = similar_index.reshape(-1)
 
-    similar_index = similar_index[similar_index != title_index]  # 기존 영화 인덱스 제외
+#     similar_index = similar_index[similar_index != title_index]  # 기존 영화 인덱스 제외
 
-    movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
-    print(movie_recommand['title'].to_list())
+#     movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
+#     print(movie_recommand['title'].to_list())
     
-    ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
-    return movie_recommand['title'].to_list()
-        
-    
+#     ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
+#     return movie_recommand['title'].to_list()
+
+
+
 @app.get("/recommand_movie_list/{title}")
 async def find_sim_movie_api(title):
     df = movies_df
@@ -94,17 +104,21 @@ async def find_sim_movie_api(title):
 
     movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
     
-    client = MongoClient("mongodb+srv://admin:1q2w3e4r@cluster0.yvz01u3.mongodb.net/?retryWrites=true&w=majority")
-
-    db = client['Movie'] 
-    movieInfo = db.movieInfo
-    movieInfo = db["movieInfo"]
-
-    mglist = movieInfo.find({movie_recommand['title'].to_dict()}:for문 돌면서 타이틀값 'title')
-    print(mglist)
-    ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
-    return mglist
 
 
-    for i in range(len(movie_recommand['title'].to_list())):
-        print({title:dict(i)})
+    mr_list =movie_recommand['title'].to_list()
+    
+    #results_dict = dict()
+    recommand_results = list()
+    for i in range(len(mr_list)):
+        mlist = movieInfo.find({'title': mr_list[i]})
+        
+        for info in mlist:
+            info.pop('_id', None)
+            recommand_results.append(info)
+    
+    results_dict = {"Results": recommand_results}  
+    #print(results_dict)  
+    #print(len(results_dict['Results']))    
+    results_dict = jsonable_encoder(results_dict)
+    return results_dict
