@@ -1,22 +1,17 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from pydantic import Field
-from database import engineconn
-from models import Movie_df
 from pymongo import MongoClient
 import pandas as pd
 import numpy as np
-import streamlit as st
+
 from sklearn.feature_extraction.text import CountVectorizer
 from ast import literal_eval
 from sklearn.metrics.pairwise import cosine_similarity
-import pydantic
-from bson import ObjectId
-#ydantic.json.ENCODERS_BY_TYPE[ObjectId]=str
 from fastapi.encoders import jsonable_encoder
+
+
 app = FastAPI()
-engine = engineconn()
-session = engine.sessionmaker()
+
+
 
 movies = pd.read_csv('../tmdbData.csv')
 

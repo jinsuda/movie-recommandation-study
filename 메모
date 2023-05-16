@@ -16,6 +16,15 @@
 
 
 
+ip주소 192.168.0.84
+@app.get("/recommand_movie_list/{title}")
+
+
+설문
+좋아하는 장르 최소1개
+
+
+
 
 
 
