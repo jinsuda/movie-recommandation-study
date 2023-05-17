@@ -7,13 +7,26 @@ from sklearn.feature_extraction.text import CountVectorizer
 from ast import literal_eval
 from sklearn.metrics.pairwise import cosine_similarity
 from fastapi.encoders import jsonable_encoder
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# origins = [
+#     "http://localhost:3000",
+#     "localhost:3000"
+# ]
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"]
+# )
 
 
-movies = pd.read_csv('../tmdbData.csv')
+
+movies = pd.read_csv('../data/tmdbData.csv')
 
 movies_df = movies[['title','genres','id','release_date','overview','original_title','vote_average','vote_count','poster_path']]
 
@@ -82,7 +95,6 @@ def find_sim_movie(df, sorted_idx, title_name, top_list=10):
 #     return movie_recommand['title'].to_list()
 
 
-
 @app.get("/recommand_movie_list/{title}")
 async def find_sim_movie_api(title):
     df = movies_df
@@ -99,8 +111,6 @@ async def find_sim_movie_api(title):
 
     movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
     
-
-
     mr_list =movie_recommand['title'].to_list()
     
     #results_dict = dict()

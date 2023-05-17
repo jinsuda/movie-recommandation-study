@@ -20,6 +20,36 @@ ip주소 192.168.0.84
 @app.get("/recommand_movie_list/{title}")
 
 
+
+
+
+
+find나 find_one에서 어떻게 특정 문자열을 contain한 결과물
+정규식을 사용하면 된다
+특정 문자 포함해서 검색
+data = collection.find({column: {'$regex': text}})
+
+import re
+
+text='아바타'
+title = '아바' # 인풋
+p = re.compile(f'.*{title}.*')
+m = p.match(text)
+m.group()
+>>> 아바타
+title이라는 변수가 포함되면 text를 반환하는 정규식 코드다.
+
+food_col = db.collection # pymongo 사용
+
+def find_sim_movie_api(title):
+    foodlist = []
+    findfood = food_col.find({"title":{'$regex':f'.*{title}.*'}})
+    for f in findfood:
+        foodlist.append(f)
+    return foodlist
+
+
+
 설문
 좋아하는 장르 최소1개
 
