@@ -3,13 +3,30 @@ from pymongo import MongoClient
 import pandas as pd
 import numpy as np
 
+from pydantic import BaseModel
+
+
 from sklearn.feature_extraction.text import CountVectorizer
 from ast import literal_eval
 from sklearn.metrics.pairwise import cosine_similarity
 from fastapi.encoders import jsonable_encoder
-from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+@app.get("/")
+async def root():
+    return {"msg": "Hello World"}
+
+class Data(BaseModel):
+    id: int
+    title: str
+    genres: str
+    vote_average: str
+    vote_count: str
+    popularity: str
+    overview: str
+    original_title: str
 
 # origins = [
 #     "http://localhost:3000",

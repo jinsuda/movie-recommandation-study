@@ -49,7 +49,7 @@ def find_sim_movie_api(title):
     return foodlist
 
 
-리턴받은 json 파일을 백엔드로 넘겨서 백엔드에서 프론트로 리턴
+리턴받은 json 형식을 백엔드로 넘겨서 백엔드에서 프론트로 리턴
 (프론트에서 바로 값을 받아오면 보안문제)
 백엔드 DTO?
 
