@@ -3,44 +3,12 @@ from pymongo import MongoClient
 import pandas as pd
 import numpy as np
 
-from pydantic import BaseModel
-
-
 from sklearn.feature_extraction.text import CountVectorizer
 from ast import literal_eval
 from sklearn.metrics.pairwise import cosine_similarity
 from fastapi.encoders import jsonable_encoder
 
-
 app = FastAPI()
-
-@app.get("/")
-async def root():
-    return {"msg": "Hello World"}
-
-class Data(BaseModel):
-    id: int
-    title: str
-    genres: str
-    vote_average: str
-    vote_count: str
-    popularity: str
-    overview: str
-    original_title: str
-
-# origins = [
-#     "http://localhost:3000",
-#     "localhost:3000"
-# ]
-
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"]
-# )
-
 
 
 movies = pd.read_csv('../data/tmdbData.csv')
@@ -91,30 +59,9 @@ def find_sim_movie(df, sorted_idx, title_name, top_list=10):
     
     return df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
 
-# @app.get("/recommand_movie/{title}")
-# async def find_sim_movie_api(title):
-#     df = movies_df
-#     sorted_idx = genre_sim_sorted
-#     top_list = 10
-#     title_movie = df[df['title'] == title]
-#     title_index = title_movie.index.values
 
-#     # 장르 유사성이 높은 영화 top_list의 2배수만큼 후보선정
-#     similar_index = sorted_idx[title_index, :(top_list*2)]
-#     similar_index = similar_index.reshape(-1)
-
-#     similar_index = similar_index[similar_index != title_index]  # 기존 영화 인덱스 제외
-
-#     movie_recommand = df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
-#     print(movie_recommand['title'].to_list())
-    
-#     ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
-#     return movie_recommand['title'].to_list()
-@app.post("/")
-async def get_movies(title)
-
-@app.get("/recommand_movie_list/{title}")
-async def find_sim_movie_api(title):
+@app.get("/recommand_movie_list")
+async def find_sim_movie_api(title: str=""):
     df = movies_df
     sorted_idx = genre_sim_sorted
     top_list = 10
