@@ -60,8 +60,8 @@ def find_sim_movie(df, sorted_idx, title_name, top_list=10):
     return df.iloc[similar_index].sort_values('weighted_vote', ascending=False)[:top_list]
 
 
-@app.get("/recommand_movie_list")
-async def find_sim_movie_api(title: str=""):
+@app.get("/recommand_movie_list/{title}")
+async def find_sim_movie_api(title):
     df = movies_df
     sorted_idx = genre_sim_sorted
     top_list = 10
