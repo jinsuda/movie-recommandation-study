@@ -1,3 +1,6 @@
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
+
+
 
 유저가 영화를 검색하면 그 영화 장르와 비슷한 영화 추천
 영화마다 장르가 n개
