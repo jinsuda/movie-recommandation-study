@@ -110,7 +110,8 @@ def find_sim_movie(df, sorted_idx, title_name, top_list=10):
     
 #     ######### 데이터베이스에 접근해서 해당되는 영화들의 정보를 하나의 Json 형태로 만들어서 Return 
 #     return movie_recommand['title'].to_list()
-
+@app.post("/")
+async def get_movies(title)
 
 @app.get("/recommand_movie_list/{title}")
 async def find_sim_movie_api(title):
